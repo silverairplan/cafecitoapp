@@ -106,7 +106,19 @@ class ProductController extends Controller
 	{
 		$token = $request->input('token');
 		$id = $request->input('id');
+		$user = User::where('token',$token)->first();
 
-		$product = Product::where('id',$id)->first();
+		if($user)
+		{
+			$product = Product::where('id',$id)->where('creater',$user->id)->first();	
+			$product->delete();
+			$products = Product::where('creater',$user->id)->get();
+			return array('success'=>true,'products'=>$products);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
+		
 	}
 }

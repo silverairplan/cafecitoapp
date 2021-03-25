@@ -29,7 +29,7 @@ class LiveStreamController extends Controller
 				'livemethod'=>$data['livemethod'],
 				'creater'=>$user->id
 			);
-
+			
 			$coverimage = $request->file('coverimage');
 			$upload = "public/livestream";
 			$coverimage->move($upload,$coverimage->getClientOriginalName());
@@ -38,6 +38,7 @@ class LiveStreamController extends Controller
 			$livestream = LiveStream::create($array);
 
 			$livestream->creater = $livestream->user;
+			
 			return array('success'=>true,'livestream'=>$livestream);
 		}
 		else
@@ -64,5 +65,18 @@ class LiveStreamController extends Controller
 		{
 			return array('success'=>false);
 		}
+	}
+
+	public function getusers(Request $request)
+	{
+		$users = $request->input('users');
+		$userlist = array();
+		//var_dump($request->input());exit;
+		foreach ($users as $user) {
+			$userinfo = User::where('id',$user)->first();
+			array_push($userlist, $userinfo);
+		}
+
+		return array('success'=>true,'users'=>$userlist);
 	}
 }

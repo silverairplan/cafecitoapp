@@ -50,3 +50,13 @@ Route::get('/card/get','PaymentController@getpaymentmethod');
 
 Route::post('/livestream/create','LiveStreamController@create');
 Route::get('/livestream/get','LiveStreamController@get');
+Route::post('/livestream/getuser','LiveStreamController@getusers');
+
+Route::post('/message/create','MessageController@create');
+Route::get('/message/livestream','MessageController@getlivestreammessage');
+Route::get("/message/user",'MessageController@getusers');
+Route::get('/message/get','MessageController@getmessages');
+
+Route::get('/notification/get','NotificationController@getnotification');
+Route::get('/post/get','PostController@getpost');
+Route::get('/post/settings','PostController@getsetting');
