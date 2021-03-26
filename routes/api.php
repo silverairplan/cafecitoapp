@@ -38,6 +38,7 @@ Route::post('/video/like','VideoController@likevideo');
 Route::post('/video/delete','VideoController@deletevideo');
 Route::get('/video/islike','VideoController@islike');
 Route::get('/video/get','VideoController@getvideos');
+Route::get('/video/user','VideoController@getuservideos');
 
 
 Route::post('/product/create','ProductController@create');

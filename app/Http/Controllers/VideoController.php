@@ -172,4 +172,38 @@ class VideoController extends Controller
 			return array('success'=>false);
 		}
 	}
+
+	public function getuservideos(Request $request)
+	{
+		$token = $request->input('token');
+		$userid = $request->input('userid');
+
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$videos = Video::all();
+
+			$videos = Video::where('creater',$userid)->get();
+
+			$array = array();
+			foreach ($videos as $video) {
+				$like = count(Likes::where('liked',$video->id)->where('type','VIDEO')->get());
+				array_push($array,array(
+					'id'=>$video->id,
+					'title'=>$video->title,
+					'coverimage'=>$video->coverimage,
+					'creater'=>$video->user,
+					'source'=>$video->source,
+					'likes'=>$like
+				));
+			}
+
+			return array('success'=>true,'video'=>$array);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
+	}
 }
