@@ -102,7 +102,7 @@ class PaymentController extends Controller
 					}
 					else
 					{
-						array_push($paymentdata,['amount'=>$subtotal])
+						array_push($paymentdata,['amount'=>$subtotal]);
 					}
 
 					PaymentHistory::create([
