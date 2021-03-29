@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Model\User;
 use App\Model\PaymentMethod;
+use Stripe\Error\Card;
+use Cartalyst\Stripe\Stripe;
+use App\Model\PaymentHistory;
+use App\Model\Product;
+use App\Model\RequestInfo;
+use App\Model\User;
 
 class PaymentController extends Controller
 {
@@ -49,6 +55,89 @@ class PaymentController extends Controller
 		else
 		{
 			return array('success'=>false);
+		}
+	}
+
+	public function payment(Request $request)
+	{
+		$requestinfo = $request->input('request');
+		$products = $request->input('products');
+		$subtotal = $request->input('subtotal');
+		$fee = $request->input('fee');
+		$token = $request->input('token');
+		$stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+		$cardtoken = $request->input('cardtoken');
+		$paymentmethod = $request->input('paymentmethod');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			try
+			{
+				$charge = $stripe->charges()->create([
+					'card'=>$cardtoken,
+					'currency'=>'USD',
+					'amount'=>$subtotal + $fee,
+					'description'=>$user->fullname . ' has paid for ' . $requestinfo?'request':'card'
+				]);
+
+				if($charge['status'] == 'succeed')
+				{
+					$paymentdata = array();
+					$type = 'unknown';
+					$requestitem = null;
+
+					if($requestinfo)
+					{
+						$requestitem = RequestInfo::create($requestinfo);
+
+						array_push($paymentdata,['id'=>$requestitem->id,'amount'=>$subtotal]);
+						$type = 'request';
+					}
+					else if($products)
+					{
+						$paymentdata = $products;
+						$type = 'product';
+					}
+					else
+					{
+						array_push($paymentdata,['amount'=>$subtotal])
+					}
+
+					PaymentHistory::create([
+						'productinfo'=>json_encode($paymentdata),
+						'price'=>$subtotal,
+						'methodid'=>$paymentmethod,
+						'type'=>$type,
+						'creater'=>$user->id
+					]);
+
+					PaymentHistory::create([
+						'price'=>$fee,
+						'methodid'=>$paymentmethod,
+						'type'=>'admin_fee',
+						'creater'=>$user->id
+					]);
+
+					return array('success'=>true,'message'=>$requestitem != null?'You have successfully create request for ' . $requestitem->influencerinfo->fullname:'You have successfully purchase products','type'=>$type);
+				}
+			}
+			catch(Exception $e)
+			{
+				return array('success'=>false,'message'=>$e->getMessage());
+			}
+			catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
+			{
+				return array('success'=>false,'message'=>$e->getMessage());
+			}
+			catch(\Cartalyst\Stripe\Exception\MissingParameterException $e)
+			{
+				return array('success'=>false,'message'=>$e->getMessage());
+			}	
+		}
+		else
+		{
+			return array('success'=>false,'message'=>'You have to signin first');
 		}
 	}
 }
