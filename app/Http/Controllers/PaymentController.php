@@ -64,7 +64,7 @@ class PaymentController extends Controller
 		$subtotal = $request->input('subtotal');
 		$fee = $request->input('fee');
 		$token = $request->input('token');
-		$stripe = Stripe::setApiKey(env('STRIPE_SECRET'));
+		$stripe = new Stripe(env('STRIPE_SECRET'));
 		$cardtoken = $request->input('cardtoken');
 		$paymentmethod = $request->input('paymentmethod');
 		$user = User::where('token',$token)->first();
