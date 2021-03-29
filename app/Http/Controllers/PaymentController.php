@@ -127,7 +127,7 @@ class PaymentController extends Controller
 			{
 				return array('success'=>false,'message'=>$e->getMessage());
 			}
-			catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
+			catch(\Cartalyst\Stripe\Exception\CardErrorException $e)
 			{
 				return array('success'=>false,'message'=>$e->getMessage());
 			}
