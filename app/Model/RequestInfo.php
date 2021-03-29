@@ -7,7 +7,7 @@
 	class RequestInfo extends Model
 	{
 		protected $table = "requests";
-		protected $fillable = ["type","for","influencer","to","from","pronoun",'occasion',"instruction","email","order","status","reply","customerid"];
+		protected $fillable = ["type","for","influencer","to","from","pronoun",'occasion',"instruction","email","phone","status","hidevideo","quantity","reply","customerid"];
 
 		public function influencerinfo()
 		{

@@ -89,6 +89,7 @@ class PaymentController extends Controller
 
 					if($requestinfo)
 					{
+						$requestinfo['customer_id'] = $user->id;
 						$requestitem = RequestInfo::create($requestinfo);
 
 						array_push($paymentdata,['id'=>$requestitem->id,'amount'=>$subtotal]);
