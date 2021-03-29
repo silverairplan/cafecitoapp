@@ -40,6 +40,7 @@ class ProductController extends Controller
 			}
 
 			$product = Product::create($insertinfo);
+			$product->creater = $product->createrinfo;
 
 			return array('success'=>true,'product'=>$product);
 		}
@@ -76,6 +77,7 @@ class ProductController extends Controller
 			}
 
 			$product->update($updateinfo);
+			$product->creater = $product->createrinfo;
 			return array('success'=>true,'product'=>$product);
 		}
 		else
@@ -91,14 +93,21 @@ class ProductController extends Controller
 
 		if($user)
 		{
+			$products = [];
 			if($user->role == 'influencer')
 			{
-				return array('success'=>true,'product'=>Product::where('creater',$user->id)->get());
+				$products = Product::where('creater',$user->id)->get();
 			}
 			else
 			{
-				return array('success'=>true,'product'=>Product::all());
+				$products = Product::all();
 			}
+
+			foreach ($products as $key => $product) {
+				$products[$key]->creater = $product->createrinfo;
+			}
+
+			return array('success'=>true,'product'=>$products);
 		}
 	}
 
@@ -113,6 +122,10 @@ class ProductController extends Controller
 			$product = Product::where('id',$id)->where('creater',$user->id)->first();	
 			$product->delete();
 			$products = Product::where('creater',$user->id)->get();
+			foreach ($products as $key => $product) {
+				$products[$key]->creater = $product->createrinfo;
+			}
+
 			return array('success'=>true,'products'=>$products);
 		}
 		else
