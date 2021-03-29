@@ -77,7 +77,7 @@ class PaymentController extends Controller
 					'card'=>$cardtoken,
 					'currency'=>'USD',
 					'amount'=>$subtotal + $fee,
-					'description'=>$user->fullname . ' has paid for ' . $requestinfo?'request':'card'
+					'description'=>$user->fullname . ' has paid for ' . ($requestinfo?'request':'card')
 				]);
 
 				if($charge['status'] == 'succeed')
