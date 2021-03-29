@@ -12,7 +12,6 @@ use Cartalyst\Stripe\Stripe;
 use App\Model\PaymentHistory;
 use App\Model\Product;
 use App\Model\RequestInfo;
-use App\Model\User;
 
 class PaymentController extends Controller
 {
