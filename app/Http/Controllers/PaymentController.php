@@ -128,6 +128,42 @@ class PaymentController extends Controller
 			}
 			catch(\Cartalyst\Stripe\Exception\CardErrorException $e)
 			{
+				$paymentdata = array();
+				$type = 'unknown';
+				$requestitem = null;
+
+				if($requestinfo)
+				{
+					$requestinfo['customer_id'] = $user->id;
+					$requestitem = RequestInfo::create($requestinfo);
+
+					array_push($paymentdata,['id'=>$requestitem->id,'amount'=>$subtotal]);
+					$type = 'request';
+				}
+				else if($products)
+				{
+					$paymentdata = $products;
+					$type = 'product';
+				}
+				else
+				{
+					array_push($paymentdata,['amount'=>$subtotal]);
+				}
+
+				PaymentHistory::create([
+					'productinfo'=>json_encode($paymentdata),
+					'price'=>$subtotal,
+					'methodid'=>$paymentmethod,
+					'type'=>$type,
+					'creater'=>$user->id
+				]);
+
+				PaymentHistory::create([
+					'price'=>$fee,
+					'methodid'=>$paymentmethod,
+					'type'=>'admin_fee',
+					'creater'=>$user->id
+				]);
 				return array('success'=>false,'message'=>$e->getMessage());
 			}
 			catch(\Cartalyst\Stripe\Exception\MissingParameterException $e)
