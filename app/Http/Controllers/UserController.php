@@ -160,7 +160,7 @@ class UserController extends Controller
 			if(isset($data['email']))
 			{
 				$user = User::where('email',$data['email'])->first();
-				if($userinfo->id != $user->id)
+				if($user && $userinfo->id != $user->id)
 				{
 					return array('success'=>false,'message'=>'Email is already exist');
 				}
@@ -169,7 +169,7 @@ class UserController extends Controller
 			if(isset($data['username']))
 			{
 				$user = User::where('username',$data['username'])->first();
-				if($userinfo->id != $user->id)
+				if($user && $userinfo->id != $user->id)
 				{
 					return array('success'=>false,'message'=>'Username is already exist');
 				}
