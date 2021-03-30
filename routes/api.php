@@ -45,6 +45,11 @@ Route::post('/product/create','ProductController@create');
 Route::post('/product/update','ProductController@update');
 Route::get('/product/get','ProductController@getproducts');
 Route::post('/product/delete','ProductController@deleteproduct');
+Route::post('/product/cart/create','ProductController@addtocart');
+Route::get('/product/cart/get','ProductController@getcart');
+Route::post('/product/cart/delete','ProductController@deletecart');
+Route::post('/product/cart/update','ProductController@updatecart');
+
 
 Route::post('/card/create','PaymentController@create');
 Route::get('/card/get','PaymentController@getpaymentmethod');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Model\Product;
 use App\Model\User;
+use App\Model\Cart;
 
 class ProductController extends Controller
 {
@@ -133,5 +134,111 @@ class ProductController extends Controller
 			return array('success'=>false);
 		}
 		
+	}
+
+	public function addtocart(Request $request)
+	{
+		$token = $request->input('token');
+		$cartinfo = $request->input('cartinfo');
+
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$cartinfo['creater'] = $user->id;
+			Cart::create($cartinfo);
+
+			return array('success'=>true);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
+	}
+
+	public function getcart(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		
+		if($user)
+		{
+			$carts = Cart::where('creater',$user->id)->get();
+			$array = array();
+			foreach ($carts as $key => $cart) {
+				if($cart->product)
+				{
+					$cart->product = $cart->product;
+					$cart->creater = $cart->user;	
+					array_push($array,$cart);
+				}
+				
+			}
+
+			return array('success'=>true,'carts'=>$array);
+		}
+		else
+		{
+			return array('success'=>false);
+		}	
+	}
+
+	public function deletecart(Request $request)
+	{
+		$token = $request->input('token');
+		$id = $request->input('id');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			Cart::where('id',$id)->delete();
+			$carts = Cart::where('creater',$user->id)->get();
+			$array = array();
+			foreach ($carts as $key => $cart) {
+				if($cart->product)
+				{
+					$cart->product = $cart->product;
+					$cart->creater = $cart->user;	
+					array_push($array,$cart);
+				}
+				
+			}
+
+			return array('success'=>true,'carts'=>$array);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
+	}
+
+	public function updatecart(Request $request)
+	{
+		$token = $request->input('token');
+		$id = $request->input('id');
+		$cartinfo = $request->input('cartinfo');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			Cart::where('id',$id)->update($cartinfo);
+			$carts = Cart::where('creater',$user->id)->get();
+			$array = array();
+			foreach ($carts as $key => $cart) {
+				if($cart->product)
+				{
+					$cart->product = $cart->product;
+					$cart->creater = $cart->user;	
+					array_push($array,$cart);
+				}
+				
+			}
+
+			return array('success'=>true,'carts'=>$array);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
 	}
 }
