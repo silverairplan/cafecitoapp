@@ -169,6 +169,7 @@ class ProductController extends Controller
 				if($cart->product)
 				{
 					$cart->product = $cart->product;
+					$cart->product->creater = $cart->product->creterinfo;
 					$cart->creater = $cart->user;	
 					array_push($array,$cart);
 				}
@@ -199,6 +200,7 @@ class ProductController extends Controller
 				{
 					$cart->product = $cart->product;
 					$cart->creater = $cart->user;	
+					$cart->product->creater = $cart->product->creterinfo;
 					array_push($array,$cart);
 				}
 				
@@ -229,6 +231,7 @@ class ProductController extends Controller
 				{
 					$cart->product = $cart->product;
 					$cart->creater = $cart->user;	
+					$cart->product->creater = $cart->product->creterinfo;
 					array_push($array,$cart);
 				}
 				
