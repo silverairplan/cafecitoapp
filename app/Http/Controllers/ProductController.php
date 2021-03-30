@@ -241,4 +241,20 @@ class ProductController extends Controller
 			return array('success'=>false);
 		}
 	}
+
+	public function clearcart(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			Cart::where('creater',$user->id)->delete();
+			return array('success'=>true);
+		}
+		else
+		{
+			return array('success'=>false);
+		}
+	}
 }

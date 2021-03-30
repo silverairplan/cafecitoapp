@@ -49,6 +49,7 @@ Route::post('/product/cart/create','ProductController@addtocart');
 Route::get('/product/cart/get','ProductController@getcart');
 Route::post('/product/cart/delete','ProductController@deletecart');
 Route::post('/product/cart/update','ProductController@updatecart');
+Route::post('/product/cart/clear','ProductController@clearcart');
 
 
 Route::post('/card/create','PaymentController@create');
