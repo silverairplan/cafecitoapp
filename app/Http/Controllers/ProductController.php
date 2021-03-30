@@ -169,7 +169,6 @@ class ProductController extends Controller
 				if($cart->product)
 				{
 					$cart->product = $cart->product;
-					$cart->product->creater = $cart->product->creterinfo;
 					array_push($array,$cart);
 				}
 				
