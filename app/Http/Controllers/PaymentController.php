@@ -80,7 +80,7 @@ class PaymentController extends Controller
 					'description'=>$user->fullname . ' has paid for ' . ($requestinfo?'request':'card')
 				]);
 
-				if($charge['status'] == 'succeed')
+				if($charge['status'] == 'succeeded')
 				{
 					$paymentdata = array();
 					$type = 'unknown';
