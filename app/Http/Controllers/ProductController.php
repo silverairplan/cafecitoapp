@@ -170,7 +170,6 @@ class ProductController extends Controller
 				{
 					$cart->product = $cart->product;
 					$cart->product->creater = $cart->product->creterinfo;
-					$cart->creater = $cart->user;	
 					array_push($array,$cart);
 				}
 				
