@@ -67,6 +67,7 @@ class PaymentController extends Controller
 		$stripe = new Stripe(env('STRIPE_SECRET'));
 		$cardtoken = $request->input('cardtoken');
 		$paymentmethod = $request->input('paymentmethod');
+		$shippinginfo = $request->input('shippinginfo');
 		$user = User::where('token',$token)->first();
 
 		if($user)
@@ -88,7 +89,7 @@ class PaymentController extends Controller
 
 					if($requestinfo)
 					{
-						$requestinfo['customer_id'] = $user->id;
+						$requestinfo['customerid'] = $user->id;
 						$requestitem = RequestInfo::create($requestinfo);
 
 						array_push($paymentdata,['id'=>$requestitem->id,'amount'=>$subtotal]);
@@ -142,6 +143,22 @@ class PaymentController extends Controller
 		else
 		{
 			return array('success'=>false,'message'=>'You have to signin first');
+		}
+	}
+
+	public function getrequest(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$requests = RequestInfo::where('customerid',$user->id)->get();
+			return ['success'=>true,'data'=>$requests];
+		}
+		else
+		{
+			return ['success'=>false];
 		}
 	}
 }

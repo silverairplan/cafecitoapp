@@ -55,6 +55,7 @@ Route::post('/product/cart/clear','ProductController@clearcart');
 Route::post('/card/create','PaymentController@create');
 Route::get('/card/get','PaymentController@getpaymentmethod');
 Route::post('/card/payment','PaymentController@payment');
+Route::get('/request/get','PaymentController@getrequest');
 
 Route::post('/livestream/create','LiveStreamController@create');
 Route::get('/livestream/get','LiveStreamController@get');
@@ -68,3 +69,5 @@ Route::get('/message/get','MessageController@getmessages');
 Route::get('/notification/get','NotificationController@getnotification');
 Route::get('/post/get','PostController@getpost');
 Route::get('/post/settings','PostController@getsetting');
+
+

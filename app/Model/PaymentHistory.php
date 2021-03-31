@@ -8,7 +8,7 @@ class PaymentHistory extends Model
 {
     //
     protected $table = "paymenthistory";
-    protected $fillable = ['productinfo','price','type','methodid','creater'];
+    protected $fillable = ['productinfo','price','type','methodid','creater','shippinginfo'];
 
     function userinfo()
 	{
