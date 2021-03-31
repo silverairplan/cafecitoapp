@@ -159,7 +159,7 @@ class PaymentController extends Controller
 			foreach ($requests as $key => $value) {
 				if($value->influencerinfo)
 				{
-					$value->influencerinfo->reviews = Review::where('influencer',$value->influencer)->get();
+					$value->influencerinfo->reviews = Review::where('influencerid',$value->influencer)->get();
 					array_push($array,$value);
 				}
 			}
