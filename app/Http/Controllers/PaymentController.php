@@ -58,6 +58,30 @@ class PaymentController extends Controller
 		}
 	}
 
+	public function history(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$histories = PaymentHistory::where('creater',$user->id)->get();
+			$list = array();
+			foreach ($histories as $key => $history) {
+				if($history->method)
+				{
+					array_push($list,$history);
+				}
+			}
+
+			return ['success'=>true,'history'=>$history];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
+
 	public function payment(Request $request)
 	{
 		$requestinfo = $request->input('request');
@@ -84,7 +108,7 @@ class PaymentController extends Controller
 
 				if($charge['status'] == 'succeeded')
 				{
-					$paymentdata = array();
+					$paymentdata = array(['amount'=>$fee]);
 					$type = 'unknown';
 					$requestitem = null;
 
@@ -108,18 +132,12 @@ class PaymentController extends Controller
 
 					PaymentHistory::create([
 						'productinfo'=>json_encode($paymentdata),
-						'price'=>$subtotal,
+						'price'=>$subtotal + $fee,
 						'methodid'=>$paymentmethod,
 						'type'=>$type,
 						'creater'=>$user->id
 					]);
 
-					PaymentHistory::create([
-						'price'=>$fee,
-						'methodid'=>$paymentmethod,
-						'type'=>'admin_fee',
-						'creater'=>$user->id
-					]);
 
 					return array('success'=>true,'message'=>$requestitem != null?'You have successfully create request for ' . $requestitem->influencerinfo->fullname:'You have successfully purchase products','type'=>$type);
 				}
