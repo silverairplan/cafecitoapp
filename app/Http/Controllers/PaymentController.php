@@ -12,6 +12,7 @@ use Cartalyst\Stripe\Stripe;
 use App\Model\PaymentHistory;
 use App\Model\Product;
 use App\Model\RequestInfo;
+use App\Model\Review;
 
 class PaymentController extends Controller
 {
@@ -154,11 +155,22 @@ class PaymentController extends Controller
 		if($user)
 		{
 			$requests = RequestInfo::where('customerid',$user->id)->get();
-			return ['success'=>true,'data'=>$requests];
+			$array = array();
+			foreach ($requests as $key => $value) {
+				if($value->influencerinfo)
+				{
+					$value->influencerinfo->reviews = Review::where('influencer',$value->influencer)->get();
+					array_push($array,$value);
+				}
+			}
+
+			return ['success'=>true,'data'=>$array];
 		}
 		else
 		{
 			return ['success'=>false];
 		}
 	}
+
+
 }
