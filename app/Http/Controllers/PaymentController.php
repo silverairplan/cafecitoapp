@@ -65,7 +65,7 @@ class PaymentController extends Controller
 
 		if($user)
 		{
-			$histories = PaymentHistory::where('creater',$user->id)->get();
+			$histories = PaymentHistory::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			$list = array();
 			foreach ($histories as $key => $history) {
 				if($history->method)
