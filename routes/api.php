@@ -55,7 +55,7 @@ Route::post('/product/cart/clear','ProductController@clearcart');
 Route::post('/card/create','PaymentController@create');
 Route::get('/card/get','PaymentController@getpaymentmethod');
 Route::post('/card/payment','PaymentController@payment');
-Route::get('/cart/history','PaymentController@history');
+Route::get('/card/history','PaymentController@history');
 Route::get('/request/get','PaymentController@getrequest');
 
 Route::post('/livestream/create','LiveStreamController@create');
