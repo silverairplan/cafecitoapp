@@ -74,7 +74,7 @@ class PaymentController extends Controller
 				}
 			}
 
-			return ['success'=>true,'history'=>$history];
+			return ['success'=>true,'history'=>$list];
 		}
 		else
 		{
