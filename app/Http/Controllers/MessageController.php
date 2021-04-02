@@ -82,14 +82,14 @@ class MessageController extends Controller
 		$user = $request->input('user');
 		$token = $request->input('token');
 
-		$userinfo = User::where('token',$token)->first();
+		$userinfo = User::where('token',$token)->orderBy('created_at','DESC')->first();
 
 		$userlist = array();
 		$idlist = array();
 		$users = array();
 		if($user)
 		{
-			$users = User::where('fullname','like', '%' . $user . '%')->get();
+			$users = User::where('fullname','like', '%' . $user . '%')->orderBy('created_at','DESC')->get();
 		}
 
 		if($userinfo)
@@ -100,7 +100,7 @@ class MessageController extends Controller
 				{
 					if(($message->to == $userinfo->id && $message->fromuser) && !in_array($message->from, $idlist))
 					{
-						$messagearray = Message::where('from',$message->from)->where('to',$message->to)->where('status','active')->get();
+						$messagearray = Message::where('from',$message->from)->where('to',$message->to)->where('status','active')->orderBy('created_at','DESC')->get();
 						$fromuser = $message->fromuser;
 						if(count($messagearray) > 0)
 						{

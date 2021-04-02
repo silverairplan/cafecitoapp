@@ -88,7 +88,7 @@ class PodcastController extends Controller
 		if($user)
 		{	
 			$podcasts = Podcast::where('id',$id)->first();
-			$episodes = Episode::where('podcast',$id)->get();
+			$episodes = Episode::where('podcast',$id)->orderBy('created_at','DESC')->get();
 
 			$list = array();
 
@@ -114,12 +114,12 @@ class PodcastController extends Controller
 	public function getpodcasts(Request $request)
 	{
 		$token = $request->input('token');
-		$user = User::where('token',$token);
+		$user = User::where('token',$token)->first();
 
 		if($user)
 		{
 			$list = array();
-			$podcasts = Podcast::all();
+			$podcasts = Podcast::orderBy('created_at','DESC')->get();
 			return array('success'=>true,'data'=>$podcasts);
 		}
 		else
@@ -131,7 +131,7 @@ class PodcastController extends Controller
 	public function getepisode(Request $request)
 	{
 		$token = $request->input('token');
-		$user = User::where('token',$token);
+		$user = User::where('token',$token)->first();
 		$id = $request->input('id');
 		if($user)
 		{

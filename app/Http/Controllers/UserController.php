@@ -116,7 +116,7 @@ class UserController extends Controller
 
 		if($userinfo)
 		{
-			$reviews = Review::where('influencerid',$userinfo->id)->get();
+			$reviews = Review::where('influencerid',$userinfo->id)->orderBy('created_at','DESC')->get();
 			return array('success'=>true,'reviews'=>$reviews);
 		}
 		else
@@ -132,7 +132,7 @@ class UserController extends Controller
 
 		if($userinfo)
 		{
-			$influencers = User::where('role','influencer')->where('active',true)->get();
+			$influencers = User::where('role','influencer')->where('active',true)->orderBy('created_at','DESC')->get();
 			$array = array();
 
 			foreach ($influencers as $influencer) {
@@ -228,8 +228,19 @@ class UserController extends Controller
 
 		if($user)
 		{
+
 			$reviewinfo['customerid'] = $user->id;
-			$review = Review::create($reviewinfo);
+			
+			$review = Review::where('influencerid',$reviewinfo['influencerid'])->where('customerid',$reviewinfo['customerid'])->first();
+
+			if(!$review)
+			{
+				$review = Review::create($reviewinfo);	
+			}
+			else
+			{
+				$review->update($reviewinfo);
+			}
 
 			if($review->customer && $review->influencer)
 			{
@@ -254,7 +265,7 @@ class UserController extends Controller
 		$user = User::where('token',$token)->first();
 		if($user)
 		{
-			$reviews = Review::where('influencerid',$id)->get();
+			$reviews = Review::where('influencerid',$id)->orderBy('created_at','DESC')->get();
 
 			$list = array();
 

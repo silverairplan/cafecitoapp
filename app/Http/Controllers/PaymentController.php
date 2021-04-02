@@ -172,12 +172,12 @@ class PaymentController extends Controller
 
 		if($user)
 		{
-			$requests = RequestInfo::where('customerid',$user->id)->get();
+			$requests = RequestInfo::where('customerid',$user->id)->orderBy('created_at','DESC')->get();
 			$array = array();
 			foreach ($requests as $key => $value) {
 				if($value->influencerinfo)
 				{
-					$value->influencerinfo->reviews = Review::where('influencerid',$value->influencer)->get();
+					$value->influencerinfo->reviews = Review::where('influencerid',$value->influencer)->orderBy('created_at','DESC')->get();
 					array_push($array,$value);
 				}
 			}

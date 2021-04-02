@@ -97,11 +97,11 @@ class ProductController extends Controller
 			$products = [];
 			if($user->role == 'influencer')
 			{
-				$products = Product::where('creater',$user->id)->get();
+				$products = Product::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			}
 			else
 			{
-				$products = Product::all();
+				$products = Product::orderBy('created_at','DESC')->all();
 			}
 
 			foreach ($products as $key => $product) {
@@ -122,7 +122,7 @@ class ProductController extends Controller
 		{
 			$product = Product::where('id',$id)->where('creater',$user->id)->first();	
 			$product->delete();
-			$products = Product::where('creater',$user->id)->get();
+			$products = Product::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			foreach ($products as $key => $product) {
 				$products[$key]->creater = $product->createrinfo;
 			}
@@ -163,7 +163,7 @@ class ProductController extends Controller
 		
 		if($user)
 		{
-			$carts = Cart::where('creater',$user->id)->get();
+			$carts = Cart::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			$array = array();
 			foreach ($carts as $key => $cart) {
 				if($cart->product)
@@ -192,7 +192,7 @@ class ProductController extends Controller
 		if($user)
 		{
 			Cart::where('id',$id)->delete();
-			$carts = Cart::where('creater',$user->id)->get();
+			$carts = Cart::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			$array = array();
 			foreach ($carts as $key => $cart) {
 				if($cart->product)
@@ -222,7 +222,7 @@ class ProductController extends Controller
 		if($user)
 		{
 			Cart::where('id',$id)->update($cartinfo);
-			$carts = Cart::where('creater',$user->id)->get();
+			$carts = Cart::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			$array = array();
 			foreach ($carts as $key => $cart) {
 				if($cart->product)

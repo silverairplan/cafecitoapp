@@ -54,7 +54,7 @@ class LiveStreamController extends Controller
 
 		if($user)
 		{
-			$livestreams = LiveStream::all();
+			$livestreams = LiveStream::orderBy('created_at','DESC')->get();
 			foreach ($livestreams as $key => $livestream) {
 				$livestreams[$key]->creater = $livestream->user;
 			}

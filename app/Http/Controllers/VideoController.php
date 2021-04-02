@@ -63,7 +63,7 @@ class VideoController extends Controller
 
 			if($me || $user->role == 'influencer')
 			{
-				$videos = Video::where('creater',$user->id)->get();
+				$videos = Video::where('creater',$user->id)->orderBy('created_at','DESC')->get();
 			}
 
 			$array = array();
@@ -182,9 +182,7 @@ class VideoController extends Controller
 
 		if($user)
 		{
-			$videos = Video::all();
-
-			$videos = Video::where('creater',$userid)->get();
+			$videos = Video::where('creater',$userid)->orderBy('created_at','DESC')->get();
 
 			$array = array();
 			foreach ($videos as $video) {

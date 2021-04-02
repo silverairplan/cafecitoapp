@@ -18,7 +18,7 @@ class PostController extends Controller
 	public function getpost(Request $request)
 	{
 		$type = $request->input('type');
-		$posts = Post::where('type',$type)->get();
+		$posts = Post::where('type',$type)->orderBy('created_at','DESC')->get();
 
 		return array(
 			'post'=>$posts
