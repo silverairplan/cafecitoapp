@@ -71,4 +71,6 @@ Route::get('/notification/get','NotificationController@getnotification');
 Route::get('/post/get','PostController@getpost');
 Route::get('/post/settings','PostController@getsetting');
 
+Route::post('/review/submit','UserController@submitreview');
+
 

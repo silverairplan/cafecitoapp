@@ -219,6 +219,24 @@ class UserController extends Controller
 			return array('success'=>false);
 		}
 	}
+
+	public function submitreview(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		$reviewinfo = $request->input('reviewinfo');
+
+		if($user)
+		{
+			$reviewinfo['customerid'] = $user->id;
+			$review = Review::create($reviewinfo);
+			return ['success'=>true,'reviewinfo'=>$review];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
 
 ?>
