@@ -101,7 +101,7 @@ class ProductController extends Controller
 			}
 			else
 			{
-				$products = Product::orderBy('created_at','DESC')->all();
+				$products = Product::orderBy('created_at','DESC')->get();
 			}
 
 			foreach ($products as $key => $product) {

@@ -59,7 +59,7 @@ class VideoController extends Controller
 		$me = $request->input('me');
 		if($user)
 		{
-			$videos = Video::all();
+			$videos = Video::orderBy('created_at','DESC')->get();
 
 			if($me || $user->role == 'influencer')
 			{
