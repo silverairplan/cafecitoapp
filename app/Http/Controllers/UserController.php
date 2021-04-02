@@ -246,6 +246,22 @@ class UserController extends Controller
 			return ['success'=>false];
 		}
 	}
+
+	public function getreview(Request $request)
+	{
+		$token = $request->input('token');
+		$id = $request->input('userid');
+		$user = User::where('token',$token)->first();
+		if($user)
+		{
+			$reviews = Review::where('influencerid',$id)->get();
+			return ['success'=>true,'reviews'=>$reviews];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
 
 ?>
