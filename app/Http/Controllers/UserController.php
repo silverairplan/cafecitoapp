@@ -255,7 +255,16 @@ class UserController extends Controller
 		if($user)
 		{
 			$reviews = Review::where('influencerid',$id)->get();
-			return ['success'=>true,'reviews'=>$reviews];
+
+			$list = array();
+
+			foreach ($reviews as $review) {
+				if($review->customer && $review->influencer)
+				{
+					array_push($list,$review);
+				}
+			}
+			return ['success'=>true,'reviews'=>$list];
 		}
 		else
 		{
