@@ -230,7 +230,16 @@ class UserController extends Controller
 		{
 			$reviewinfo['customerid'] = $user->id;
 			$review = Review::create($reviewinfo);
-			return ['success'=>true,'reviewinfo'=>$review];
+
+			if($review->customer && $review->influencer)
+			{
+				return ['success'=>true,'reviewinfo'=>$review];	
+			}
+			else
+			{
+				return ['success'=>false];
+			}
+			
 		}
 		else
 		{
