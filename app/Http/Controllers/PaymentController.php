@@ -185,7 +185,7 @@ class PaymentController extends Controller
 			}
 			else
 			{
-				$requests = RequestInfo::where('influencerid',$user->id)->where('status','!=','canceled')->orderBy('created_at','DESC')->get();
+				$requests = RequestInfo::where('influencer',$user->id)->where('status','!=','canceled')->orderBy('created_at','DESC')->get();
 				foreach ($requests as $request) {
 					if($request->customerinfo)
 					{
