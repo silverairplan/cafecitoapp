@@ -11,10 +11,10 @@ class Review extends Model
 
 	public function customer()
 	{
-		return $this->belongsTo(User::class,'custemerid');
+		return $this->belongsTo(User::class,'customerid');
 	}
 
-	public function influener()
+	public function influencer()
 	{
 		return $this->belongsTo(User::class,'influencerid');
 	}
