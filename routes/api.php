@@ -73,5 +73,6 @@ Route::get('/post/settings','PostController@getsetting');
 
 Route::post('/review/submit','UserController@submitreview');
 Route::get('/review/get','UserController@getreview');
+Route::post('/review/reply','UserController@submitreply');
 
 

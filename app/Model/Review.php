@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
 	protected $table = "reviews";
-	protected $fillable = ["title","description","reviews","influencerid","customerid"];
+	protected $fillable = ["title","description","reviews","influencerid","customerid",'reply'];
 
 	public function customer()
 	{

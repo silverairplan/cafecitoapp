@@ -292,6 +292,28 @@ class UserController extends Controller
 			return ['success'=>false];
 		}
 	}
+
+	public function submitreply(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		$id = $request->input('id');
+		$reply = $request->input('reply');
+
+		if($user)
+		{
+			$review = Review::where('id',$id)->first();
+			$review->update(
+				['reply'=>$reply]
+			);
+
+			return ['success'=>true];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
 
 ?>
