@@ -117,7 +117,14 @@ class UserController extends Controller
 		if($userinfo)
 		{
 			$reviews = Review::where('influencerid',$userinfo->id)->orderBy('created_at','DESC')->get();
-			return array('success'=>true,'reviews'=>$reviews);
+			$list = array();
+			foreach ($reviews as $review) {
+				if($review->customer && $review->influencer)
+				{
+					array_push($list, $review);
+				}
+			}
+			return array('success'=>true,'reviews'=>$list);
 		}
 		else
 		{
