@@ -121,6 +121,7 @@ class UserController extends Controller
 			foreach ($reviews as $review) {
 				if($review->customer && $review->influencer)
 				{
+					$review->customer->reviews = count(Review::where('customerid',$review->customerid)->get());
 					array_push($list, $review);
 				}
 			}
