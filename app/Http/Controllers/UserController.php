@@ -270,10 +270,9 @@ class UserController extends Controller
 			$list = array();
 
 			foreach ($reviews as $review) {
-				if($review->customer && $review->influencer)
-				{
-					array_push($list,$review);
-				}
+				$review->customer = $review->customer;
+				$review->influencer = $review->influencer;
+				array_push($list,$review);
 			}
 			return ['success'=>true,'reviews'=>$list];
 		}
