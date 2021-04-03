@@ -169,16 +169,28 @@ class PaymentController extends Controller
 	{
 		$token = $request->input('token');
 		$user = User::where('token',$token)->first();
-
+		$array = array();
 		if($user)
 		{
-			$requests = RequestInfo::where('customerid',$user->id)->orderBy('created_at','DESC')->get();
-			$array = array();
-			foreach ($requests as $key => $value) {
-				if($value->influencerinfo)
-				{
-					$value->influencerinfo->reviews = Review::where('influencerid',$value->influencer)->orderBy('created_at','DESC')->get();
-					array_push($array,$value);
+			if($user->role == 'customer')
+			{
+				$requests = RequestInfo::where('customerid',$user->id)->orderBy('created_at','DESC')->get();
+				foreach ($requests as $key => $value) {
+					if($value->influencerinfo)
+					{
+						$value->influencerinfo->reviews = Review::where('influencerid',$value->influencer)->orderBy('created_at','DESC')->get();
+						array_push($array,$value);
+					}
+				}	
+			}
+			else
+			{
+				$requests = RequestInfo::where('influencerid',$user->id)->where('status','!=','canceled')->orderBy('created_at','DESC')->get();
+				foreach ($requests as $request) {
+					if($request->customerinfo)
+					{
+						array_push($array,$request);
+					}
 				}
 			}
 
