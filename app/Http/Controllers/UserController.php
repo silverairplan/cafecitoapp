@@ -270,9 +270,12 @@ class UserController extends Controller
 			$list = array();
 
 			foreach ($reviews as $review) {
-				$review->customer = $review->customer;
-				$review->influencer = $review->influencer;
-				array_push($list,$review);
+				if($review->customer && $review->influencer)
+				{
+					$customerreviews = Review::where('customerid',$review->customerid)->get();
+					$review->customer->reviews = count($customerreviews);
+					array_push($list,$review);
+				}
 			}
 			return ['success'=>true,'reviews'=>$list];
 		}
