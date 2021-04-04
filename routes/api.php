@@ -77,6 +77,7 @@ Route::get('/review/get','UserController@getreview');
 Route::post('/review/reply','UserController@submitreply');
 
 Route::get('/notification/get','ProductController@notification');
+Route::post('/notification/send','ProductController@sendmessage');
 
 
 

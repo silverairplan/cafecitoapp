@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\App;
 use App\Model\Product;
 use App\Model\User;
 use App\Model\Cart;
+use App\Model\Notification;
+use App\Services\NotificationService;
 
 class ProductController extends Controller
 {
@@ -267,6 +269,21 @@ class ProductController extends Controller
 		{
 			$notifications = Notification::where('createdby',$user->id)->orderBy('created_at','DESC')->get();
 			return ['success'=>true,'notifications'=>$notifications];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
+
+	public function sendmessage(Request $request,NotificationService $notificationservice)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$notificationservice->sendmessage("Test","This is test",$user->noti_token);
 		}
 		else
 		{
