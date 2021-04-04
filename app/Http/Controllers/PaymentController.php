@@ -118,7 +118,7 @@ class PaymentController extends Controller
 					{
 						$requestinfo['customerid'] = $user->id;
 						$requestitem = RequestInfo::create($requestinfo);
-						$influencer = User::where('id',$requestinfo['influencerid'])->first();
+						$influencer = User::where('id',$requestinfo['influencer'])->first();
 						$notification = Notification::create([
 							'title'=>$user->fullname . ' has created request',
 							'description'=>$user->fullname . ' has requested for ' . $requestinfo['type'] . ' to ' .   $influencer->fullname,
