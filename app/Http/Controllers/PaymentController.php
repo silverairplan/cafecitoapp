@@ -227,5 +227,50 @@ class PaymentController extends Controller
 		}
 	}
 
+	public function requeststatus(Request $request,NotificationService $notificationservice)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		$id = $request->input('id');
+		$status = $request->input('status');
+		if($user)
+		{
+			$requestinfo = RequestInfo::where('id',$id)->first();
+			if($requestinfo)
+			{
+				$notificationinfo = [];
+				if($status == 'completed')
+				{
+					$notificationinfo = [
+						'title'=>$user->fullname . " has sended " . $requestinfo->type . ' for request',
+						'description'=>$user->fullname . ' has sended ' . $requestinfo->type . ' for request',
+						'createdby'=> $requestinfo->customerid
+					];
+				}
+				else if($status == 'canceled')
+				{
+					$notificationinfo = [
+						'title'=>$user->fullname . " has canceled the " . $requestinfo->type . ' request',
+						'description'=>$user->fullname . ' has canceled ' . $requestinfo->type . ' request',
+						'createdby'=> $requestinfo->customerid
+					];	
+				}
+
+				$notification = Notification::create($notificationinfo);
+				$notificationservice->sendmessage($notification->title,$notification->description,$requestinfo->customerinfo->noti_token);
+
+				return ['success'=>true];
+			}
+			else
+			{
+				return ['success'=>false];
+			}
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
+
 
 }
