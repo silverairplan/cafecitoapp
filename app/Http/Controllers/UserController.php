@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Model\User;
 use App\Model\Review;
 use Illuminate\Support\Str;
+use App\Services\NotificationService;
 
 class UserController extends Controller
 {
@@ -293,7 +294,7 @@ class UserController extends Controller
 		}
 	}
 
-	public function submitreply(Request $request)
+	public function submitreply(Request $request,NotificationService $notificationservice)
 	{
 		$token = $request->input('token');
 		$user = User::where('token',$token)->first();
@@ -306,6 +307,16 @@ class UserController extends Controller
 			$review->update(
 				['reply'=>$reply]
 			);
+
+			$notification = Notification::create(
+				[
+					'title'=>$user->fullname . ' has replied for ' . $review->customer->fullname . ' review',
+					'description'=>$user->fullname . ' has replied with "' . $reply . '"',
+					'createdby'=>$review->customerid
+				]
+			);
+
+			$notificationservice->sendmessage($notification->title,$notification->description,$review->customer->noti_token);
 
 			return ['success'=>true];
 		}
