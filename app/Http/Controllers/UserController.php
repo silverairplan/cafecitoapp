@@ -314,6 +314,24 @@ class UserController extends Controller
 			return ['success'=>false];
 		}
 	}
+
+	public function notifytoken(Request $request)
+	{
+		$token = $request->input('token');
+		$notifytoken = $request->input('notifytoken');
+
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$user->update(['noti_token'=>$notifytoken]);
+			return ['success'=>true];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
 
 ?>

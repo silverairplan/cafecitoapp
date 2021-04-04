@@ -13,6 +13,8 @@ use App\Model\PaymentHistory;
 use App\Model\Product;
 use App\Model\RequestInfo;
 use App\Model\Review;
+use App\Model\Notification;
+use App\Services\NotificationService;
 
 class PaymentController extends Controller
 {
@@ -82,7 +84,7 @@ class PaymentController extends Controller
 		}
 	}
 
-	public function payment(Request $request)
+	public function payment(Request $request,NotificationService $notificationservice)
 	{
 		$requestinfo = $request->input('request');
 		$products = $request->input('products');
@@ -116,13 +118,35 @@ class PaymentController extends Controller
 					{
 						$requestinfo['customerid'] = $user->id;
 						$requestitem = RequestInfo::create($requestinfo);
+						$influencer = User::where('id',$requestinfo['influencerid'])->first();
+						$notification = Notification::create([
+							'title'=>$user->fullname . ' has created request',
+							'description'=>$user->fullname . ' has requested for ' . $requestinfo['type'] . ' to ' .   $influencer->fullname,
+							'createdby'=>$influencer->id
+						]);
 
+						$notificationservice->sendmessage($notification->title,$notification->description,$influencer->noti_token);
 						array_push($paymentdata,['id'=>$requestitem->id,'amount'=>$subtotal]);
 						$type = 'request';
 					}
 					else if($products)
 					{
 						$paymentdata = $products;
+						$notificationdata = array();
+						foreach ($products as $product) {
+							$productinfo = Product::where('id',$product['id'])->first();
+							if($productinfo->createrinfo)
+							{
+								$notification = Notification::create([
+									'title'=>$user->fullname . ' has purchased product',
+									'description'=>$user->fullname . ' has purchased ' . $product['amount'] . ' of ' . $productinfo->title,
+									'createdby'=>$productinfo->createrinfo->id
+								]);
+
+								$notificationservice->sendmessage($notification->title,$notification->description,$productinfo->createrinfo->noti_token);
+							}
+						}
+
 						$type = 'product';
 					}
 					else
@@ -164,6 +188,7 @@ class PaymentController extends Controller
 			return array('success'=>false,'message'=>'You have to signin first');
 		}
 	}
+
 
 	public function getrequest(Request $request)
 	{

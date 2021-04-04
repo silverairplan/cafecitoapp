@@ -26,6 +26,7 @@ Route::get("/user/review",'UserController@getreviews');
 Route::get("/user/influencer",'UserController@getinfluencers');
 Route::post('/user/update','UserController@update');
 Route::post('/user/updatepassword','UserController@updatepassword');
+Route::post('/user/notifytoken','UserController@notifytoken');
 
 Route::post("/podcast/create",'PodcastController@addfeed');
 Route::get('/podcast/getbyid','PodcastController@getpodcastbyid');
@@ -74,5 +75,9 @@ Route::get('/post/settings','PostController@getsetting');
 Route::post('/review/submit','UserController@submitreview');
 Route::get('/review/get','UserController@getreview');
 Route::post('/review/reply','UserController@submitreply');
+
+Route::get('/notification/get','ProductController@notification');
+
+
 
 

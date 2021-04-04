@@ -257,4 +257,20 @@ class ProductController extends Controller
 			return array('success'=>false);
 		}
 	}
+
+	public function notification(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+
+		if($user)
+		{
+			$notifications = Notification::where('createdby',$user->id)->orderBy('created_at','DESC')->get();
+			return ['success'=>true,'notifications'=>$notifications];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
