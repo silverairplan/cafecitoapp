@@ -268,6 +268,7 @@ class ProductController extends Controller
 		if($user)
 		{
 			$notifications = Notification::where('createdby',$user->id)->orderBy('created_at','DESC')->get();
+			Notification::where('createdby',$user->id)->update(['is_read'=>1]);
 			return ['success'=>true,'notifications'=>$notifications];
 		}
 		else
