@@ -256,6 +256,8 @@ class PaymentController extends Controller
 					];	
 				}
 
+				$requestinfo->update(['status'=>$status]);
+
 				$notification = Notification::create($notificationinfo);
 				$notificationservice->sendmessage($notification->title,$notification->description,$requestinfo->customerinfo->noti_token);
 
