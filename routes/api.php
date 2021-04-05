@@ -28,6 +28,7 @@ Route::get("/user/influencer",'UserController@getinfluencers');
 Route::post('/user/update','UserController@update');
 Route::post('/user/updatepassword','UserController@updatepassword');
 Route::post('/user/notifytoken','UserController@notifytoken');
+Route::post('/user/forgot','UserController@forgotpassword');
 
 Route::post("/podcast/create",'PodcastController@addfeed');
 Route::get('/podcast/getbyid','PodcastController@getpodcastbyid');

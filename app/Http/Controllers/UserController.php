@@ -10,6 +10,8 @@ use App\Model\User;
 use App\Model\Review;
 use Illuminate\Support\Str;
 use App\Services\NotificationService;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\forgotpassword;
 
 class UserController extends Controller
 {
@@ -359,6 +361,22 @@ class UserController extends Controller
 		else
 		{
 			return ['success'=>false];
+		}
+	}
+
+	public function forgotpassword(Request $request)
+	{
+		$email = $request->input('email');
+
+		$user = User::where('email',$email)->first();
+
+		if($user)
+		{
+			Mail::to($user->email)->send(new forgotpassword($user));
+		}
+		else
+		{
+			return ['success'=>false,'message'=>"This user doesn't exist"];
 		}
 	}
 }
