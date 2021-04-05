@@ -77,6 +77,24 @@ class UserController extends Controller
 		}
 	}
 
+	public function loginwithsocial(Request $request)
+	{
+		$user = $request->input('user');
+		$userinfo = User::where('email',$user['email'])->first();
+		$credential = Str::random(60);
+
+		if($userinfo)
+		{
+			$userinfo->update(['token'=>$credential]);
+		}
+		else
+		{
+			$user['token'] = $credential;
+			$userinfo = User::create($user);
+		}
+		return array('success'=>true,'token'=>$credential,'userinfo'=>$userinfo);
+	}
+
 	public function get(Request $request)
 	{
 		$token = $request->input('token');
