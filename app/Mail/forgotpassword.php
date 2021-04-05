@@ -32,6 +32,6 @@ class forgotpassword extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.forgot');
+        return $this->from('jws19950122@outlook.com')->view('mail.forgot');
     }
 }
