@@ -43,8 +43,7 @@ class UserController extends Controller
 		else
 		{
 			$user['password'] = bcrypt($user['password']);
-			$userinfo = new User($user);
-			$userinfo->save();
+			$userinfo = User::create($user);
 			return array('success'=>true);
 		}
 	}
@@ -377,6 +376,39 @@ class UserController extends Controller
 		else
 		{
 			return ['success'=>false,'message'=>"This user doesn't exist"];
+		}
+	}
+
+	public function identification_upload(Request $request)
+	{
+		$email = $request->input('email');
+		$user = User::where('email',$email)->first();
+
+		if($user)
+		{
+			$data = array();
+			$profile = $request->file('profile');
+			$idcard = $request->fild('idcard');
+			if($profile)
+			{
+				$profileupload = "public/profile";
+				$profile->move($profileupload,$profile->getClientOriginalName());
+				$data['profile'] = $profileupload . '/' . $profile->getClientOriginalName();
+			}
+
+			if($idcard)
+			{
+				$idupload = "public/idcard";
+				$idcard->move($idupload,$idcard->getClientOriginalName());
+				$data['idpath'] = $idupload . '/' . $idcard->getClientOriginalName();
+			}
+
+			$user->update($data);
+			return ['success'=>true,'message'=>'You have successfully upload your identification'];
+		}
+		else
+		{
+			return ['success'=>false];
 		}
 	}
 }
