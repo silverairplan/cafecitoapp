@@ -83,6 +83,8 @@ Route::post('/review/reply','UserController@submitreply');
 Route::get('/notification/get','ProductController@notification');
 Route::post('/notification/send','ProductController@sendmessage');
 
+Route::post('/feedback/create','FeedbackController@createfeedback');
+
 
 
 
