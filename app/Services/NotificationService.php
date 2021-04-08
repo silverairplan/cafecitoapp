@@ -12,8 +12,11 @@ class NotificationService
 
 	public function sendmessage($title,$body,$token)
 	{
-		$messaging = app('firebase.messaging');
-        $message = CloudMessage::withTarget('token',$token)->withNotification(['title'=>$title,'body'=>$body]);
-        $messaging->send($message);
+		if($token)
+		{
+			$messaging = app('firebase.messaging');
+	        $message = CloudMessage::withTarget('token',$token)->withNotification(['title'=>$title,'body'=>$body]);
+	        $messaging->send($message);
+		}
 	}
 }
