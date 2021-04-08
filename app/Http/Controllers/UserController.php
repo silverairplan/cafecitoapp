@@ -388,7 +388,7 @@ class UserController extends Controller
 		{
 			$data = array();
 			$profile = $request->file('profile');
-			$idcard = $request->fild('idcard');
+			$idcard = $request->file('idcard');
 			if($profile)
 			{
 				$profileupload = "public/profile";
