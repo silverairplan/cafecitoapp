@@ -192,4 +192,22 @@ class MessageController extends Controller
 			return ['success'=>false];
 		}
 	}
+
+	public function reject(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		$userid = $request->input('userid');
+
+		if($user)
+		{
+			Message::where('to',$user->id)->where('from',$userid)->where('status','!=','active')->delete();
+			return ['success'=>true];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+
+	}
 }
