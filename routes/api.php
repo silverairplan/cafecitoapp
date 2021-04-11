@@ -71,6 +71,7 @@ Route::post('/message/create','MessageController@create');
 Route::get('/message/livestream','MessageController@getlivestreammessage');
 Route::get("/message/user",'MessageController@getusers');
 Route::get('/message/get','MessageController@getmessages');
+Route::post('/message/accept','MessageController@accept');
 
 Route::get('/notification/get','NotificationController@getnotification');
 Route::get('/post/get','PostController@getpost');

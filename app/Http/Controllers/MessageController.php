@@ -175,4 +175,21 @@ class MessageController extends Controller
 			return array('success'=>false);
 		}
 	}
+
+	public function accept(Request $request)
+	{
+		$token = $request->input('token');
+		$user = User::where('token',$token)->first();
+		$userid = $request->input('userid');
+
+		if($user)
+		{
+			Message::where('to',$user->id)->where('from',$userid)->where('status','!=','active')->update(['status'=>'active']);
+			return ['success'=>true];
+		}
+		else
+		{
+			return ['success'=>false];
+		}
+	}
 }
