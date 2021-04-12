@@ -154,6 +154,7 @@ class PaymentController extends Controller
 					}
 					else if($podcasts)
 					{
+						$paymentdata = $podcasts;
 						foreach ($podcasts as $podcast) {
 							$podcastinfo = Podcast::where('id',$podcast['id'])->first();
 							PodcastUser::create(
@@ -169,7 +170,7 @@ class PaymentController extends Controller
 									'description'=>$user->fullname . ' has purchased ' . $podcastinfo->title,
 									'createdby'=>$podcastinfo->createrinfo->id
 								]);
-								$notificationservice->sendmessage($notification->title,$notification->description,$productinfo->createrinfo->noti_token);
+								$notificationservice->sendmessage($notification->title,$notification->description,$podcastinfo->createrinfo->noti_token);
 							}
 						}
 					}
