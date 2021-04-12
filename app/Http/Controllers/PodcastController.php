@@ -98,6 +98,10 @@ class PodcastController extends Controller
 			{
 				$podcasts->enable = true;
 			}
+			else
+			{
+				$podcasts->enable = false;
+			}
 			$list = array();
 
 			foreach ($episodes as $episode) {
