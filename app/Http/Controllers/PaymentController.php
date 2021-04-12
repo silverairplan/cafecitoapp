@@ -15,6 +15,8 @@ use App\Model\RequestInfo;
 use App\Model\Review;
 use App\Model\Notification;
 use App\Services\NotificationService;
+use App\Model\Podcast;
+use App\Model\PodcastUser;
 
 class PaymentController extends Controller
 {
@@ -88,6 +90,7 @@ class PaymentController extends Controller
 	{
 		$requestinfo = $request->input('request');
 		$products = $request->input('products');
+		$podcasts = $request->input('podcasts');
 		$subtotal = $request->input('subtotal');
 		$fee = $request->input('fee');
 		$token = $request->input('token');
@@ -148,6 +151,27 @@ class PaymentController extends Controller
 						}
 
 						$type = 'product';
+					}
+					else if($podcasts)
+					{
+						foreach ($podcasts as $podcast) {
+							$podcastinfo = Podcast::where('id',$podcast['id']);
+							PodcastUser::create(
+								[
+									'userid'=>$user->id,
+									'podcast_id'=>$podcast['id']
+								]
+							);
+							if($podcastinfo->createrinfo)
+							{
+								$notification = Notification::create([
+									'title'=>$user->fullname . ' has purchased product',
+									'description'=>$user->fullname . ' has purchased ' . $podcastinfo->title,
+									'createdby'=>$podcastinfo->createrinfo->id
+								]);
+								$notificationservice->sendmessage($notification->title,$notification->description,$productinfo->createrinfo->noti_token);
+							}
+						}
 					}
 					else
 					{

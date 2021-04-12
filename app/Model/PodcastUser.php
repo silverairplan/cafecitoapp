@@ -4,11 +4,11 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Podcast extends Model
+class PodcastUser extends Model
 {
     //
-    protected $table = "podcast";
-    protected $fillable = ['feedurl','image','title','description','creator','author','price','type'];
+    protected $table = "podcastusers";
+    protected $fillable = ['userid','podcast_id'];
 
     function createrinfo()
     {

@@ -8,7 +8,7 @@ use Vedmant\FeedReader\Facades\FeedReader;
 use App\Model\User;
 use App\Model\Podcast;
 use App\Model\Episode;
-
+use App\Model\PodcastUser;
 class PodcastController extends Controller
 {
 	public function __construct()
@@ -19,6 +19,8 @@ class PodcastController extends Controller
 	public function addfeed(Request $request)
 	{
 		$url = $request->input('url');
+		$type = $request->input('type');
+		$price = $request->input('price');
 		$token = $request->input('token');
 
 		$user = User::where('token',$token)->first();
@@ -90,6 +92,12 @@ class PodcastController extends Controller
 			$podcasts = Podcast::where('id',$id)->first();
 			$episodes = Episode::where('podcast',$id)->orderBy('created_at','DESC')->get();
 
+			$podcastuser = PodcastUser::where('userid',$user->id)->where('podcast_id',$id)->first();
+
+			if(!$podcastuser)
+			{
+				$podcasts->enable = true;
+			}
 			$list = array();
 
 			foreach ($episodes as $episode) {
