@@ -155,7 +155,7 @@ class PaymentController extends Controller
 					else if($podcasts)
 					{
 						foreach ($podcasts as $podcast) {
-							$podcastinfo = Podcast::where('id',$podcast['id']);
+							$podcastinfo = Podcast::where('id',$podcast['id'])->first();
 							PodcastUser::create(
 								[
 									'userid'=>$user->id,
