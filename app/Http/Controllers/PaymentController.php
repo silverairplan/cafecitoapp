@@ -172,6 +172,7 @@ class PaymentController extends Controller
 								]);
 								$notificationservice->sendmessage($notification->title,$notification->description,$podcastinfo->createrinfo->noti_token);
 							}
+							$type = 'podcast';
 						}
 					}
 					else
@@ -186,6 +187,11 @@ class PaymentController extends Controller
 						'type'=>$type,
 						'creater'=>$user->id
 					]);
+
+					if($podcast)
+					{
+						return array('success'=>true,'message'=>'You have successfully purchase podcasts','type'=>$type);
+					}
 
 
 					return array('success'=>true,'message'=>$requestitem != null?'You have successfully create request for ' . $requestitem->influencerinfo->fullname:'You have successfully purchase products','type'=>$type);
